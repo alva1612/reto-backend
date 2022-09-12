@@ -1,17 +1,10 @@
-/* import links from '../data/dummy.js' */
-
-var links = [{
-    id: 'link-0',
-    url: 'www.howtographql.com',
-    description: 'Fullstack tutorial for GraphQL'
-  }]
-
 const resolvers = {
     Query: {
         info: () => `API de alvaro`,
-        feed: () => links,
+        feed: async (parent, args, context, info) => {
+            const newLink = context.prisma.link.findMany()
+        },
         link: (parent, args) => {
-            
             const id = args.id;
             const result = links.find(link => link.id == id)
             return result;
@@ -20,7 +13,6 @@ const resolvers = {
     Mutation: {
         // 2
         post: (parent, args) => {
-      
         let idCount = links.length
     
            const link = {
@@ -31,7 +23,7 @@ const resolvers = {
           links.push(link)
           return link
         },
-        updateLink: (parent, args) => {
+        updateLink: async (parent, args) => {
             const {id, description, url} = args;
             const linkIndex = links.findIndex(link => link.id == id) || -1 
             
