@@ -13,42 +13,41 @@ import Subscription from './resolvers/Subscription.js'
 
 import { getUserId } from './utils/authUtls.js'
 
-
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 const __dirschema = join(__dirname, 'lib', 'schema.graphql')
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
 
-const pubsub = new PubSub();
+const pubsub = new PubSub()
 
 const typeDefs = readFileSync(
-    __dirschema,
-    'utf-8')
- 
+  __dirschema,
+  'utf-8')
+
 const resolvers = {
-    Query,
-    Mutation,
-    Subscription,
-    User,
-    Link
+  Query,
+  Mutation,
+  Subscription,
+  User,
+  Link
 }
 
 const server = new ApolloServer({
-    typeDefs,
-    resolvers,
-    context: ({ req }) => {
-        return {
-            ...req,
-            prisma,
-            pubsub,
-            userId: req && req.headers.authorization 
-                    ? getUserId(req) : null
-        }
+  typeDefs,
+  resolvers,
+  context: ({ req }) => {
+    return {
+      ...req,
+      prisma,
+      pubsub,
+      userId: req && req.headers.authorization
+        ? getUserId(req)
+        : null
     }
+  }
 })
 
-
 server
-    .listen()
-    .then(({url}) => console.log(`Server corriendo en ${url}`))
+  .listen()
+  .then(({ url }) => console.log(`Server corriendo en ${url}`))

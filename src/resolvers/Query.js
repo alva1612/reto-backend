@@ -1,5 +1,5 @@
-async function feed(parent, args, context, info) {
-    return context.prisma.link.findMany()
+async function feed (parent, args, context, info) {
+  return context.prisma.link.findMany()
 }
 
-export default { feed };
+export default { feed }
